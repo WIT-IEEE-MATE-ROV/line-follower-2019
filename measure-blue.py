@@ -18,8 +18,21 @@ for uin in sys.argv[1:]:
 
         # Show the blue isolated image, then get a listing of the corner-coordinates
         cv.imshow("Blue isolated Image", cv.pyrDown(pimg))
-        pimg = nl.drawcorners(pimg)
+        pimg, minx, miny, maxx, maxy = nl.drawcorners(pimg)
         cv.imshow("Corners", cv.pyrDown(pimg))
+
+        # From the coordinates of the corners, find the dimension of the actual rectangle
+        diffx = maxx - minx
+        diffy = maxy - miny
+        small_side = diffx if diffx < diffy else diffy
+        large_side = diffx if diffx > diffy else diffy
+
+        print(small_side, large_side)
+
+        # We know (thanks to the rules) that the tape width is 3/4 of an inch.
+        # So, the smallest side is 3/4 and we know the pixel side-- a quick ratio tells us the length.
+        bluelength = (0.75 / small_side) * large_side
+        print(bluelength)
 
         cv.waitKey()
         cv.destroyAllWindows()

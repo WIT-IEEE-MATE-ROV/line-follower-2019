@@ -75,8 +75,22 @@ def drawcorners(image):
     corners = cv.goodFeaturesToTrack(image, 4, .01, 10)
     corners = np.int0(corners)
 
+    maxx = 0
+    maxy = 0
+    miny, minx = image.shape[:2]
+
     for corner in corners:
         x,y = corner.ravel()
-        cv.circle(image, (x,y), 10, 100, -1)
+        maxx = x if x >= maxx else maxx
+        minx = x if x <= minx else minx
+    
+        miny = y if y <= miny else miny
+        maxy = y if y >= maxy else maxy
 
-    return image
+        cv.circle(image, (x, y), 10, 100, -1)
+    
+    cv.circle(image, (minx, miny), 10, 255, -1)
+    cv.circle(image, (maxx, maxy), 10, 255, -1)
+
+    print(minx, maxx, miny, maxy)
+    return image, minx, miny, maxx, maxy
