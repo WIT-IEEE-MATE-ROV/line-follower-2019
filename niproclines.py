@@ -73,7 +73,10 @@ def finddirection(img):
 
 def drawcorners(image):
     corners = cv.goodFeaturesToTrack(image, 4, .01, 10)
-    corners = np.int0(corners)
+    if corners is not None:
+        corners = np.int0(corners)
+    else:
+        return image, -1, -1, -1, -1
 
     maxx = 0
     maxy = 0
@@ -92,5 +95,5 @@ def drawcorners(image):
     cv.circle(image, (minx, miny), 10, 255, -1)
     cv.circle(image, (maxx, maxy), 10, 255, -1)
 
-    print(minx, maxx, miny, maxy)
+    #print(minx, maxx, miny, maxy)
     return image, minx, miny, maxx, maxy
