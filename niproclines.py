@@ -21,6 +21,16 @@ def pullred(image):
     return cv.add(mask2, mask1)
 
 
+def pullblue(image):
+    hsv_image = cv.cvtColor(image, cv.COLOR_BGR2HSV)
+
+    # Getting the range for acceptable blue values
+    range_low = np.array([110, 50, 50])
+    range_high = np.array([130, 255, 255])
+
+    return cv.inRange(hsv_image, range_low, range_high)
+
+
 def finddirection(img):
     # We have an image that's black where there's no red, and white where there is.
     # So-- we pick out the edges that have masking (with a bit of a buffer for safety),
@@ -60,4 +70,27 @@ def finddirection(img):
         print(" |")
     print("")
 
+
+def drawcorners(image):
+    corners = cv.goodFeaturesToTrack(image, 4, .01, 10)
+    corners = np.int0(corners)
+
+    maxx = 0
+    maxy = 0
+    miny, minx = image.shape[:2]
+
+    for corner in corners:
+        x,y = corner.ravel()
+        maxx = x if x >= maxx else maxx
+        minx = x if x <= minx else minx
     
+        miny = y if y <= miny else miny
+        maxy = y if y >= maxy else maxy
+
+        cv.circle(image, (x, y), 10, 100, -1)
+    
+    cv.circle(image, (minx, miny), 10, 255, -1)
+    cv.circle(image, (maxx, maxy), 10, 255, -1)
+
+    print(minx, maxx, miny, maxy)
+    return image, minx, miny, maxx, maxy
