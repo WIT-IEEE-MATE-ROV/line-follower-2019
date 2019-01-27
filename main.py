@@ -7,6 +7,7 @@ import niproclines as nl
 for uin in sys.argv[1:]:
     print("Loading image: ", uin)
     img = cv.imread(uin)
+    img = cv.resize(img,256,144)
 
     if img is not None:
         cv.imshow("Original Image", cv.pyrDown(img))
