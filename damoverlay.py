@@ -9,6 +9,7 @@ l = sys.argv[4]			#float crack length
 
 x = int(x)
 y = int(y)
+l = str(l)
 
 unit = 300					#px
 width = unit * 4
@@ -16,11 +17,11 @@ height = unit * 3
 grid_color = (0, 0, 0)
 line_thickness = 3			#px
 font = cv.FONT_HERSHEY_PLAIN
-fontsize = 10
+fontsize = 5
 
 
-img = np.ones((height, width, 3), np.uint8)
-img[:,0:width] = (255,255,255)
+img = np.ones((height + unit, width + unit, 3), np.uint8)
+img[:,0:width + unit] = (255,255,255)
 
 cv.line(img, (0, 0), (width, 0), grid_color, line_thickness)
 cv.line(img, (0, unit), (width, unit), grid_color, line_thickness)
@@ -34,8 +35,8 @@ cv.line(img, (height, 0), (height, height), grid_color, line_thickness)
 cv.line(img, (width, 0), (width, height), grid_color, line_thickness)
 
 
-xpos = unit * x
-ypos = unit * y
+xpos = unit * (x - 1)
+ypos = unit * (y - 1)
 xbuff = unit / 5
 ybuff = unit / 2
 textbuff = unit / 4
@@ -43,13 +44,12 @@ c = (255,0,0)
 
 
 if o == 'h':
-	cv.line(img, (xpos + xbuff, ypos + ybuff), (xpos + 4 * xbuff, ypos + ybuff), c, line_thickness)
+	cv.line(img, (int(xpos + xbuff), int(ypos + ybuff)), (int(xpos + 4 * xbuff), int(ypos + ybuff)), c, line_thickness)
+	cv.putText(img, l, (int(xpos + textbuff), int(ypos + textbuff)), font, fontsize, grid_color, line_thickness)
 else:
-	cv.line(img, (xpos + ybuff, ypos + xbuff), (xpos + ybuff, ypos + 4 * xbuff), c, line_thickness)
+	cv.line(img, (int(xpos + ybuff), int(ypos + xbuff)), (int(xpos + ybuff), int(ypos + 4 * xbuff)), c, line_thickness)
+	cv.putText(img, l, (int(xpos + textbuff), int(ypos + textbuff)), font, fontsize, grid_color, line_thickness)
 
-	
-l = str(l)
-cv.putText(img, l, (xpos + textbuff, ypos + textbuff), font, fontsize, grid_color, cv.LINE_AA)
 
 cv.imshow('dam overlay', img)
 cv.waitKey(0)
