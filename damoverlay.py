@@ -1,6 +1,7 @@
 import cv2 as cv
 import numpy as np
 import sys
+from decimal import Decimal
 
 x = sys.argv[1]			#int x position
 y = sys.argv[2]			#int y position
@@ -9,6 +10,8 @@ l = sys.argv[4]			#float crack length
 
 x = int(x)
 y = int(y)
+l = float(l)
+l = round(l, 1)
 l = str(l)
 
 unit = 300					#px
@@ -17,7 +20,7 @@ height = unit * 3
 grid_color = (0, 0, 0)
 line_thickness = 3			#px
 font = cv.FONT_HERSHEY_PLAIN
-fontsize = 5
+fontsize = 3
 
 
 img = np.ones((height + unit, width + unit, 3), np.uint8)
@@ -48,7 +51,7 @@ if o == 'h':
 	cv.putText(img, l, (int(xpos + textbuff), int(ypos + textbuff)), font, fontsize, grid_color, line_thickness)
 else:
 	cv.line(img, (int(xpos + ybuff), int(ypos + xbuff)), (int(xpos + ybuff), int(ypos + 4 * xbuff)), c, line_thickness)
-	cv.putText(img, l, (int(xpos + textbuff), int(ypos + textbuff)), font, fontsize, grid_color, line_thickness)
+	cv.putText(img,l + ' cm', (int(xpos + textbuff), int(ypos + textbuff)), font, fontsize, grid_color, line_thickness)
 
 
 cv.imshow('dam overlay', img)
