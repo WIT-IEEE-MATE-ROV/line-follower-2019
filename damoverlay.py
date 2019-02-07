@@ -23,8 +23,8 @@ font = cv.FONT_HERSHEY_PLAIN
 fontsize = 3
 
 
-img = np.ones((height + unit, width + unit, 3), np.uint8)
-img[:,0:width + unit] = (255,255,255)
+img = np.ones((height, width, 3), np.uint8)
+img[:,0:width] = (255,255,255)
 
 cv.line(img, (0, 0), (width, 0), grid_color, line_thickness)
 cv.line(img, (0, unit), (width, unit), grid_color, line_thickness)
